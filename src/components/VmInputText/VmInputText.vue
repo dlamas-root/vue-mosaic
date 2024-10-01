@@ -108,11 +108,11 @@ const count = computed(() => model.value?.length || 0)
 
     label {
       position: absolute;
-      top: 50%;
+      top: 52%;
       left: 2px;
       transform: translateY(-50%);
       color: #703A3A;
-      font-size: 16px;
+      font-size: 0.7rem;
       pointer-events: none;
       transition: 0.15s ease;
     }
@@ -163,6 +163,7 @@ const count = computed(() => model.value?.length || 0)
     }
     .vm-hint-counter {
       margin-left: 10px;
+      margin-top: 2px;
       color: #703A3A;
     }
   }

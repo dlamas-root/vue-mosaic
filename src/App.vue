@@ -4,7 +4,6 @@ import VmInputText from './components/VmInputText/VmInputText.vue'
 
 <template>
   <div style="width: 300px; padding: 100px">
-    <h3>hi there</h3>
     <VmInputText label="Password" counter required max-length="20" />
   </div>
 </template>
