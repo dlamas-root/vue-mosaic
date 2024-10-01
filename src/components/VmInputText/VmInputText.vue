@@ -111,14 +111,14 @@ const count = computed(() => model.value?.length || 0)
       top: 50%;
       left: 2px;
       transform: translateY(-50%);
-      color: #000;
+      color: #703A3A;
       font-size: 16px;
       pointer-events: none;
       transition: 0.15s ease;
     }
 
     &:has(> input:focus, input:valid) {
-      border-bottom: 2px solid red;
+      border-bottom: 2px solid #AC3F3F;
     }
 
     input {
@@ -163,6 +163,7 @@ const count = computed(() => model.value?.length || 0)
     }
     .vm-hint-counter {
       margin-left: 10px;
+      color: #703A3A;
     }
   }
 }
