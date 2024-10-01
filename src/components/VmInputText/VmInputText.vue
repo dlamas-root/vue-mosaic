@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, type Ref } from 'vue'
+import VmIcon from '../VmIcon/VmIcon.vue'
 
 const model = defineModel<String>()
 
@@ -14,7 +15,6 @@ const props = defineProps({
   loading: Boolean,
   name: String,
   prefix: String,
-  prependIcon: String,
   readonly: Boolean,
   required: Boolean,
   rules: Array<Function>,
@@ -37,7 +37,9 @@ const count = computed(() => model.value?.length || 0)
 <template>
   <div class="vm-field">
     <div class="vm-input-field">
-      <slot name="prepend"></slot>
+      <span class="vm-input-prefix" v-if="prefix">
+        {{ prefix }}
+      </span>
       <input
         v-model="model"
         :id
@@ -48,42 +50,22 @@ const count = computed(() => model.value?.length || 0)
         :type="inputType"
         :maxlength="maxLength"
       />
-      <label>
+      <label :class="{ 'vm-label-focused': prefix }">
         <slot name="label">
           {{ label }}
         </slot>
       </label>
+      <span class="vm-input-suffix" v-if="suffix">
+        {{ suffix }}
+      </span>
       <slot name="append">
-        <span v-if="appendIcon"></span>
+        <VmIcon v-if="appendIcon" :name="appendIcon" />
         <span
           v-else-if="type === 'password'"
           class="vm-icon-field"
           @click="showPassword = !showPassword"
         >
-          <svg
-            v-show="!showPassword"
-            height="24"
-            viewBox="0 0 24 24"
-            width="24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M0 0h24v24H0z" fill="none" />
-            <path
-              d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
-            />
-          </svg>
-          <svg
-            v-show="showPassword"
-            height="24"
-            viewBox="0 0 24 24"
-            width="24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M0 0h24v24H0zm0 0h24v24H0zm0 0h24v24H0zm0 0h24v24H0z" fill="none" />
-            <path
-              d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"
-            />
-          </svg>
+          <VmIcon :name="showPassword ? 'visibility_off' : 'visibility'" size="20" filled />
         </span>
       </slot>
     </div>
@@ -111,14 +93,20 @@ const count = computed(() => model.value?.length || 0)
       top: 52%;
       left: 2px;
       transform: translateY(-50%);
-      color: #703A3A;
-      font-size: 0.7rem;
+      color: #703a3a;
+      font-size: 14px;
       pointer-events: none;
       transition: 0.15s ease;
+
+      &.vm-label-focused {
+        font-size: 0.7rem;
+        top: 10px;
+        transform: translateY(-120%);
+      }
     }
 
     &:has(> input:focus, input:valid) {
-      border-bottom: 2px solid #AC3F3F;
+      border-bottom: 2px solid #ac3f3f;
     }
 
     input {
@@ -133,7 +121,7 @@ const count = computed(() => model.value?.length || 0)
       &:focus,
       &:valid {
         ~ label {
-          font-size: 0.8rem;
+          font-size: 0.7rem;
           top: 10px;
           transform: translateY(-120%);
         }
@@ -142,6 +130,14 @@ const count = computed(() => model.value?.length || 0)
       &:required ~ label::after {
         content: ' *';
       }
+    }
+    span.vm-input-prefix {
+      align-self: center;
+      margin: 0 5px 0 0;
+    }
+    span.vm-input-suffix {
+      align-self: center;
+      margin: 0 5px;
     }
     span.vm-icon-field {
       margin-top: 3px;
@@ -164,7 +160,7 @@ const count = computed(() => model.value?.length || 0)
     .vm-hint-counter {
       margin-left: 10px;
       margin-top: 2px;
-      color: #703A3A;
+      color: #703a3a;
     }
   }
 }
