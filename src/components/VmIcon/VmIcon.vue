@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+defineOptions({
+  name: 'VmIcon'
+})
+
 const props = defineProps({
   name: {
     type: String,
