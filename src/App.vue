@@ -1,10 +1,30 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import VmInputText from './components/VmInputText/VmInputText.vue'
+
+const hint = ref()
+
+function toggleHint() {
+  if (hint.value) {
+    hint.value = undefined
+  } else {
+    hint.value = 'Example'
+  }
+}
 </script>
 
 <template>
   <div style="width: 300px; padding: 100px">
-    <VmInputText label="Password" counter required max-length="20" />
+    <VmInputText
+      label="Password"
+      counter
+      required
+      max-length="100"
+      :hint="hint"
+      append-icon="home"
+      suffix="$"
+    />
+    <button @click="toggleHint">Click</button>
   </div>
 </template>
 
