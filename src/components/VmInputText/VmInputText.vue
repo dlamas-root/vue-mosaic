@@ -20,7 +20,6 @@ const props = defineProps({
   loading: Boolean,
   name: String,
   prefix: String,
-  prependIcon: String,
   readonly: Boolean,
   required: Boolean,
   rules: Array<Function>,
