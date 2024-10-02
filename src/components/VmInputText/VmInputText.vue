@@ -2,6 +2,10 @@
 import { computed, ref, type Ref } from 'vue'
 import VmIcon from '../VmIcon/VmIcon.vue'
 
+defineOptions({
+  name: 'VmInputText'
+})
+
 const model = defineModel<String>()
 
 const props = defineProps({
@@ -16,6 +20,7 @@ const props = defineProps({
   loading: Boolean,
   name: String,
   prefix: String,
+  prependIcon: String,
   readonly: Boolean,
   required: Boolean,
   rules: Array<Function>,
@@ -40,7 +45,10 @@ const count = computed(() => model.value?.length || 0)
   <div class="vm-field">
     <!-- rules, prependIcon, prefix -->
     <div class="vm-input-field">
-      <span class="vm-input-prefix" v-if="prefix">
+      <slot name="prepend">
+        <VmIcon v-if="prependIcon" :name="prependIcon" />
+      </slot>
+      <span v-if="prefix" class="vm-input-prefix">
         {{ prefix }}
       </span>
       <VmIcon v-if="prependIcon" :name="prependIcon"  :color="iconColor"/>
