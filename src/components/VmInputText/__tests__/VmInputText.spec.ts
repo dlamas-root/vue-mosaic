@@ -1,6 +1,7 @@
 import mountTemplate from '@/utils/mountTemplate'
 import { describe, expect, test } from 'vitest'
 import VmInputText from '../VmInputText.vue'
+import { nextTick } from 'vue'
 
 describe('VmInputText component', () => {
   test('mount component', async () => {
@@ -48,7 +49,8 @@ describe('VmInputText component', () => {
     expect(wrapper.exists()).toBe(true)
     const input = wrapper.find('#inputTest')
     expect(input.attributes('type')).toBe('password')
-    const visibilityIcon = wrapper.find('span.vm-icon-field')
+    const visibilityIcon = wrapper.find('span.vm-icon-field > transition-stub > span')
+    console.log(wrapper.html());
     expect(visibilityIcon.exists()).toBe(true)
     expect(visibilityIcon.text()).toBe('visibility')
 

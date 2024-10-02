@@ -42,15 +42,14 @@ const count = computed(() => model.value?.length || 0)
 
 <template>
   <div class="vm-field">
-    <!-- rules, prependIcon, prefix -->
+    <!-- TODO: rules, prepend text fix, icon fontsize fix -->
     <div class="vm-input-field">
-      <slot name="prepend">
-        <VmIcon v-if="prependIcon" :name="prependIcon" />
-      </slot>
       <span v-if="prefix" class="vm-input-prefix">
         {{ prefix }}
       </span>
-      <VmIcon v-if="prependIcon" :name="prependIcon"  :color="iconColor"/>
+      <slot name="prepend">
+        <VmIcon v-if="prependIcon" :name="prependIcon" :color="iconColor" />
+      </slot>
       <input
         v-model="model"
         :id
@@ -62,7 +61,7 @@ const count = computed(() => model.value?.length || 0)
         :maxlength="maxLength"
         :class="prependIcon ? 'pl-5' : ''"
       />
-      <label :class="{ 'vm-label-focused': prefix }" :style="prependIcon ? 'padding-left: 1.5rem;' : ''">
+      <label :style="{ paddingLeft: (prependIcon || prefix) && '1.5rem' }">
         <slot name="label">
           {{ label }}
         </slot>
@@ -78,8 +77,8 @@ const count = computed(() => model.value?.length || 0)
           @click="showPassword = !showPassword"
         >
         <Transition name="zoom-fade-in" mode="out-in">
-          <VmIcon v-if="showPassword" name="visibility" size="20" filled :color="iconColor" />
-          <VmIcon v-else name="visibility_off" size="20" filled :color="iconColor" />
+          <VmIcon v-if="showPassword" name="visibility" opticalSize="20" size="20px" filled :color="iconColor" />
+          <VmIcon v-else name="visibility_off" opticalSize="20" size="20px" filled :color="iconColor" />
         </Transition>
         </span>
       </slot>

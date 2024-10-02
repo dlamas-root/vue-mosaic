@@ -22,6 +22,7 @@ function toggleHint() {
       max-length="20"
       :hint="hint"
       type="password"
+      prefix="hi"
     />
     <button @click="toggleHint" style="margin-top: 1rem;">Click</button>
   </div>

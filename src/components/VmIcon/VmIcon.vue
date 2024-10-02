@@ -15,7 +15,7 @@ const props = defineProps({
     type: [Number, String],
     default: 400
   },
-  size: {
+  opticalSize: {
     type: [Number, String],
     default: 20
   },
@@ -23,10 +23,13 @@ const props = defineProps({
     type: String,
     default: 'black',
   },
+  size: {
+    type: String,
+  }
 })
 
 const style = computed(
-  () => `'FILL' ${props.filled ? '1' : '0'}, 'wght' ${props.weight}, 'GRAD' 0, 'opsz' ${props.size}`
+  () => `'FILL' ${props.filled ? '1' : '0'}, 'wght' ${props.weight}, 'GRAD' 0, 'opsz' ${props.opticalSize}`
 )
 </script>
 
@@ -34,7 +37,7 @@ const style = computed(
   <span
     style="align-self: center"
     class="material-symbols-outlined icon"
-    :style="{ fontVariationSettings: style, color: color }"
+    :style="{ fontVariationSettings: style, fontSize: size, color: color}"
   >
     {{ name }}
   </span>
