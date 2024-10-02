@@ -14,7 +14,11 @@ const props = defineProps({
   size: {
     type: [Number, String],
     default: 20
-  }
+  },
+  color: {
+    type: String,
+    default: 'black',
+  },
 })
 
 const style = computed(
@@ -25,8 +29,8 @@ const style = computed(
 <template>
   <span
     style="align-self: center"
-    class="material-symbols-outlined"
-    :style="{ fontVariationSettings: style }"
+    class="material-symbols-outlined icon"
+    :style="{ fontVariationSettings: style, color: color }"
   >
     {{ name }}
   </span>

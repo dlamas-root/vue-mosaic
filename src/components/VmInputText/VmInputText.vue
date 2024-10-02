@@ -7,6 +7,7 @@ const model = defineModel<String>()
 const props = defineProps({
   id: String,
   appendIcon: String,
+  prependIcon: String,
   counter: Boolean,
   maxLength: [Number, String],
   disabled: Boolean,
@@ -19,6 +20,7 @@ const props = defineProps({
   required: Boolean,
   rules: Array<Function>,
   suffix: String,
+  iconColor: String,
   type: {
     type: String,
     default: 'text',
@@ -36,10 +38,12 @@ const count = computed(() => model.value?.length || 0)
 
 <template>
   <div class="vm-field">
+    <!-- rules, prependIcon, prefix -->
     <div class="vm-input-field">
       <span class="vm-input-prefix" v-if="prefix">
         {{ prefix }}
       </span>
+      <VmIcon v-if="prependIcon" :name="prependIcon"  :color="iconColor"/>
       <input
         v-model="model"
         :id
@@ -49,8 +53,9 @@ const count = computed(() => model.value?.length || 0)
         :required
         :type="inputType"
         :maxlength="maxLength"
+        :class="prependIcon ? 'pl-5' : ''"
       />
-      <label :class="{ 'vm-label-focused': prefix }">
+      <label :class="{ 'vm-label-focused': prefix }" :style="prependIcon ? 'padding-left: 1.5rem;' : ''">
         <slot name="label">
           {{ label }}
         </slot>
@@ -59,18 +64,24 @@ const count = computed(() => model.value?.length || 0)
         {{ suffix }}
       </span>
       <slot name="append">
-        <VmIcon v-if="appendIcon" :name="appendIcon" />
+        <VmIcon v-if="appendIcon" :name="appendIcon"  :color="iconColor"/>
         <span
           v-else-if="type === 'password'"
           class="vm-icon-field"
           @click="showPassword = !showPassword"
         >
-          <VmIcon :name="showPassword ? 'visibility_off' : 'visibility'" size="20" filled />
+        <Transition name="zoom-fade-in" mode="out-in">
+          <VmIcon v-if="showPassword" name="visibility" size="20" filled :color="iconColor" />
+          <VmIcon v-else name="visibility_off" size="20" filled :color="iconColor" />
+        </Transition>
         </span>
       </slot>
     </div>
     <div class="vm-hint-field">
-      <span class="vm-hint-message">{{ hint }}</span>
+      <Transition name="fade" mode="out-in">
+        <span v-if="hint" class="vm-hint-message">{{ hint }}</span>
+        <span v-else class="vm-hint-message"></span>
+      </Transition>
       <div v-if="counter" class="vm-hint-counter">
         {{ count }}<span v-if="maxLength">/{{ maxLength }}</span>
       </div>
@@ -156,12 +167,52 @@ const count = computed(() => model.value?.length || 0)
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      color: #856262;
     }
     .vm-hint-counter {
       margin-left: 10px;
       margin-top: 2px;
       color: #703a3a;
     }
+  }
+
+  /* we will explain what these classes do next! */
+  .fade-in-top{
+    animation: FadeInTop 0.6s ease-in-out 0s 1 normal both;
+  }
+
+  @keyframes FadeInTop {
+    0% {
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.3s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
+
+  .zoom-fade-in-enter-active,
+  .zoom-fade-in-leave-active {
+    transition: all 0.3s ease-in-out;
+    scale: 1.1;
+  }
+
+  .zoom-fade-in-enter-from,
+  .zoom-fade-in-leave-to {
+    opacity: 0;
+    scale: 1;
   }
 }
 </style>

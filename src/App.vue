@@ -21,10 +21,9 @@ function toggleHint() {
       required
       max-length="100"
       :hint="hint"
-      append-icon="home"
-      suffix="$"
+      type="password"
     />
-    <button @click="toggleHint">Click</button>
+    <button @click="toggleHint" style="margin-top: 1rem;">Click</button>
   </div>
 </template>
 
