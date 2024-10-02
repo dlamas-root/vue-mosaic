@@ -90,7 +90,7 @@ const count = computed(() => model.value?.length || 0)
         <span v-if="hint" class="vm-hint-message">{{ hint }}</span>
         <span v-else class="vm-hint-message"></span>
       </Transition>
-      <div v-if="counter" class="vm-hint-counter">
+      <div v-if="counter" class="vm-hint-counter" :class="count == maxLength ? 'vm-counter-limit' : ''">
         {{ count }}<span v-if="maxLength">/{{ maxLength }}</span>
       </div>
     </div>
@@ -181,6 +181,11 @@ const count = computed(() => model.value?.length || 0)
       margin-left: 10px;
       margin-top: 2px;
       color: #703a3a;
+    }
+
+    .vm-counter-limit{
+      color: #d23232;
+      font-weight: 600;
     }
   }
 

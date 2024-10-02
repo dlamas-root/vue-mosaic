@@ -19,7 +19,7 @@ function toggleHint() {
       label="Password"
       counter
       required
-      max-length="100"
+      max-length="20"
       :hint="hint"
       type="password"
     />
