@@ -77,8 +77,8 @@ const count = computed(() => model.value?.length || 0)
           @click="showPassword = !showPassword"
         >
         <Transition name="zoom-fade-in" mode="out-in">
-          <VmIcon v-if="showPassword" name="visibility" opticalSize="20" size="20px" filled :color="iconColor" />
-          <VmIcon v-else name="visibility_off" opticalSize="20" size="20px" filled :color="iconColor" />
+          <VmIcon v-if="showPassword" id="visibility" name="visibility" opticalSize="20" size="22px" filled :color="iconColor" />
+          <VmIcon v-else id="visibility-off" name="visibility_off" opticalSize="20" size="22px" filled :color="iconColor" />
         </Transition>
         </span>
       </slot>

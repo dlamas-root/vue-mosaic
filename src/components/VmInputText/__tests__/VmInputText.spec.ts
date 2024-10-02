@@ -49,7 +49,7 @@ describe('VmInputText component', () => {
     expect(wrapper.exists()).toBe(true)
     const input = wrapper.find('#inputTest')
     expect(input.attributes('type')).toBe('password')
-    const visibilityIcon = wrapper.find('span.vm-icon-field > transition-stub > span')
+    const visibilityIcon = wrapper.find('span.vm-icon-field > transition-stub ')
     console.log(wrapper.html());
     expect(visibilityIcon.exists()).toBe(true)
     expect(visibilityIcon.text()).toBe('visibility')
