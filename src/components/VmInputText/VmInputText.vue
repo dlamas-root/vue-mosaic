@@ -38,13 +38,19 @@ const inputType = computed(() =>
   props.type === 'password' && showPassword.value ? 'text' : props.type
 )
 const count = computed(() => model.value?.length || 0)
+
+let focus = ref(false);
+function onFocus(){
+  focus.value = !focus.value;
+}
+
 </script>
 
 <template>
+  {{ ((prependIcon || prefix) && model) ? true : false }}
   <div class="vm-field">
-    <!-- TODO: prepend text fix -->
-    <div class="vm-input-field" :class="required && !model ? 'vm-input-required' : 'vm-input-not-required'">
-      <span v-if="prefix" class="vm-input-prefix">
+    <div class="vm-input-field" :class="required && !model  ? 'vm-input-required' : 'vm-input-not-required'">
+      <span v-if="(prefix && !model) || prefix" class="vm-input-prefix">
         {{ prefix }}
       </span>
       <slot name="prepend">
@@ -60,8 +66,10 @@ const count = computed(() => model.value?.length || 0)
         :type="inputType"
         :maxlength="maxLength"
         :class="{ 'pl-5': prependIcon }"
+        @focus="onFocus"
+        @focusout="onFocus"
       />
-      <label :style="{ paddingLeft: (prependIcon || prefix) && '1.5rem' }">
+      <label :style="((prependIcon || prefix) && !focus) || ((prependIcon || prefix) && model) ? 'padding-left: 1.5rem;' : 'padding-left: 0rem;'">
         <slot name="label">
           {{ label }}
         </slot>
@@ -117,6 +125,7 @@ const count = computed(() => model.value?.length || 0)
         font-size: 0.7rem;
         top: 10px;
         transform: translateY(-120%);
+        padding-left: 0;
       }
     }
 
