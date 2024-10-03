@@ -42,8 +42,9 @@ const count = computed(() => model.value?.length || 0)
 
 <template>
   <div class="vm-field">
-    <!-- TODO: rules, prepend text fix, icon fontsize fix -->
-    <div class="vm-input-field">
+    <!-- TODO: rules, prepend text fix -->
+    {{ required && !model }}
+    <div class="vm-input-field" :class="required && !model ? 'vm-input-required' : 'vm-input-not-required'">
       <span v-if="prefix" class="vm-input-prefix">
         {{ prefix }}
       </span>
@@ -59,7 +60,7 @@ const count = computed(() => model.value?.length || 0)
         :required
         :type="inputType"
         :maxlength="maxLength"
-        :class="prependIcon ? 'pl-5' : ''"
+        :class="{ 'pl-5': prependIcon }"
       />
       <label :style="{ paddingLeft: (prependIcon || prefix) && '1.5rem' }">
         <slot name="label">
@@ -99,11 +100,18 @@ const count = computed(() => model.value?.length || 0)
 .vm-field {
   .vm-input-field {
     position: relative;
-    border-bottom: 2px solid gainsboro;
     margin: 15px 0 0 0;
     transition: 0.15s ease;
     display: flex;
     flex-direction: row;
+
+      .vm-input-not-required{
+        border-bottom: 2px solid gainsboro;
+      }
+
+      .vm-input-required {
+        border-bottom: 2px solid #c01616 ;
+      }
 
     label {
       position: absolute;
