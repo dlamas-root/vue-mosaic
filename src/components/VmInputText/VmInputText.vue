@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed, ref, type Ref } from 'vue'
+import { computed, ref, type ModelRef, type Ref } from 'vue'
 import VmIcon from '../VmIcon/VmIcon.vue'
 
 defineOptions({
   name: 'VmInputText'
 })
 
-const model = defineModel<String>()
+const model: ModelRef<string | undefined> = defineModel<string>()
 
 const props = defineProps({
   id: String,
@@ -86,8 +86,7 @@ const count = computed(() => model.value?.length || 0)
     </div>
     <div class="vm-hint-field">
       <Transition name="fade" mode="out-in">
-        <span v-if="hint" class="vm-hint-message">{{ hint }}</span>
-        <span v-else class="vm-hint-message"></span>
+        <span v-show="hint" class="vm-hint-message">{{ hint }}</span>
       </Transition>
       <div v-if="counter" class="vm-hint-counter" :class="count == maxLength ? 'vm-counter-limit' : ''">
         {{ count }}<span v-if="maxLength">/{{ maxLength }}</span>
@@ -184,7 +183,7 @@ const count = computed(() => model.value?.length || 0)
       color: #856262;
     }
     .vm-hint-counter {
-      margin-left: 10px;
+      margin-left: auto;
       margin-top: 2px;
       color: #703a3a;
     }
