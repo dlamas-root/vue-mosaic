@@ -70,24 +70,44 @@ const count = computed(() => model.value?.length || 0)
         {{ suffix }}
       </span>
       <slot name="append">
-        <VmIcon v-if="appendIcon" :name="appendIcon"  :color="iconColor"/>
+        <VmIcon v-if="appendIcon" :name="appendIcon" :color="iconColor" />
         <span
           v-else-if="type === 'password'"
           class="vm-icon-field"
           @click="showPassword = !showPassword"
         >
-        <Transition name="zoom-fade-in" mode="out-in">
-          <VmIcon v-if="showPassword" id="visibility" name="visibility" opticalSize="20" size="22px" filled :color="iconColor" />
-          <VmIcon v-else id="visibility-off" name="visibility_off" opticalSize="20" size="22px" filled :color="iconColor" />
-        </Transition>
+          <Transition name="zoom-fade-in" mode="out-in">
+            <VmIcon
+              v-if="showPassword"
+              id="visibility"
+              name="visibility"
+              opticalSize="20"
+              size="22px"
+              filled
+              :color="iconColor"
+            />
+            <VmIcon
+              v-else
+              id="visibility-off"
+              name="visibility_off"
+              opticalSize="20"
+              size="22px"
+              filled
+              :color="iconColor"
+            />
+          </Transition>
         </span>
       </slot>
     </div>
     <div class="vm-hint-field">
       <Transition name="fade" mode="out-in">
-        <span v-show="hint" class="vm-hint-message">{{ hint }}</span>
+        <span v-if="hint" class="vm-hint-message">{{ hint }}</span>
       </Transition>
-      <div v-if="counter" class="vm-hint-counter" :class="count == maxLength ? 'vm-counter-limit' : ''">
+      <div
+        v-if="counter"
+        class="vm-hint-counter"
+        :class="count == maxLength ? 'vm-counter-limit' : ''"
+      >
         {{ count }}<span v-if="maxLength">/{{ maxLength }}</span>
       </div>
     </div>
@@ -180,14 +200,14 @@ const count = computed(() => model.value?.length || 0)
       color: #703a3a;
     }
 
-    .vm-counter-limit{
+    .vm-counter-limit {
       color: #d23232;
       font-weight: 600;
     }
   }
 
   /* we will explain what these classes do next! */
-  .fade-in-top{
+  .fade-in-top {
     animation: FadeInTop 0.6s ease-in-out 0s 1 normal both;
   }
 
