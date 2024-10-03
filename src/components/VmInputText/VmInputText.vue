@@ -42,8 +42,7 @@ const count = computed(() => model.value?.length || 0)
 
 <template>
   <div class="vm-field">
-    <!-- TODO: rules, prepend text fix -->
-    {{ required && !model }}
+    <!-- TODO: prepend text fix -->
     <div class="vm-input-field" :class="required && !model ? 'vm-input-required' : 'vm-input-not-required'">
       <span v-if="prefix" class="vm-input-prefix">
         {{ prefix }}
@@ -104,14 +103,6 @@ const count = computed(() => model.value?.length || 0)
     display: flex;
     flex-direction: row;
 
-      .vm-input-not-required{
-        border-bottom: 2px solid gainsboro;
-      }
-
-      .vm-input-required {
-        border-bottom: 2px solid #c01616 ;
-      }
-
     label {
       position: absolute;
       top: 52%;
@@ -168,6 +159,13 @@ const count = computed(() => model.value?.length || 0)
       margin-right: 5px;
       cursor: pointer;
     }
+  }
+  .vm-input-not-required{
+    border-bottom: 2px solid gainsboro;
+  }
+
+  .vm-input-required {
+    border-bottom: 2.5px solid #d70000 ;
   }
   .vm-hint-field {
     display: flex;
