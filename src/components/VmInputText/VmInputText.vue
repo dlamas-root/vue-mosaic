@@ -39,11 +39,6 @@ const inputType = computed(() =>
   props.type === 'password' && showPassword.value ? 'text' : props.type
 )
 const count = computed(() => model.value?.length || 0)
-
-let focus = ref(false)
-function onFocus() {
-  focus.value = !focus.value
-}
 </script>
 
 <template>
@@ -69,9 +64,7 @@ function onFocus() {
       :required
       :type="inputType"
       :maxlength="maxLength"
-      :class="{ 'pl-5': prependIcon }"
-      @focus="onFocus"
-      @focusout="onFocus"
+      :style="{ paddingLeft: prependIcon && '0px' }"
     />
     <template #prepend>
       <slot name="prepend" />

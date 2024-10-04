@@ -22,16 +22,15 @@ defineProps({
 
 <template>
   <div class="vm-field">
-    <!-- TODO: prepend text fix -->
     <div class="vm-input-field">
       <slot name="prepend">
-        <VmIcon v-if="prependIcon" :name="prependIcon" :color="iconColor" />
+        <VmIcon class="vm-input-prefix" v-if="prependIcon" :name="prependIcon" :color="iconColor" />
       </slot>
       <span v-if="prefix" class="vm-input-prefix">
         {{ prefix }}
       </span>
       <slot />
-      <label :style="{ paddingLeft: (prependIcon || prefix) && '1.5rem' }">
+      <label>
         <slot name="label">
           {{ label }}
         </slot>
@@ -67,6 +66,17 @@ defineProps({
     display: flex;
     flex-direction: row;
     border-bottom: 2px solid gainsboro;
+
+    &:has(span.vm-input-prefix) {
+      &:has(> input:focus, input:valid) {
+        padding-left: 0;
+      }
+      &:not(:has(> input:focus, input:valid)) {
+        label {
+          padding-left: 1.5rem;
+        }
+      }
+    }
 
     label {
       position: absolute;
