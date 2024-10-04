@@ -40,44 +40,43 @@ const inputType = computed(() =>
 )
 const count = computed(() => model.value?.length || 0)
 
-let focus = ref(false);
-function onFocus(){
-  focus.value = !focus.value;
+let focus = ref(false)
+function onFocus() {
+  focus.value = !focus.value
 }
-
 </script>
 
 <template>
-  {{ ((prependIcon || prefix) && model) ? true : false }}
-  <div class="vm-field">
-    <div class="vm-input-field" :class="required && !model  ? 'vm-input-required' : 'vm-input-not-required'">
-      <span v-if="(prefix && !model) || prefix" class="vm-input-prefix">
-        {{ prefix }}
-      </span>
-      <slot name="prepend">
-        <VmIcon v-if="prependIcon" :name="prependIcon" :color="iconColor" />
-      </slot>
-      <input
-        v-model="model"
-        :id
-        :name
-        :disabled
-        :readonly
-        :required
-        :type="inputType"
-        :maxlength="maxLength"
-        :class="{ 'pl-5': prependIcon }"
-        @focus="onFocus"
-        @focusout="onFocus"
-      />
-      <label :style="((prependIcon || prefix) && !focus) || ((prependIcon || prefix) && model) ? 'padding-left: 1.5rem;' : 'padding-left: 0rem;'">
-        <slot name="label">
-          {{ label }}
-        </slot>
-      </label>
-      <span class="vm-input-suffix" v-if="suffix">
-        {{ suffix }}
-      </span>
+  <VmField
+    :appendIcon
+    :prependIcon
+    :counter
+    :counterActual="count"
+    :counterMax="maxLength"
+    :hint
+    :label
+    :loading
+    :prefix
+    :suffix
+    :iconColor
+  >
+    <input
+      v-model="model"
+      :id
+      :name
+      :disabled
+      :readonly
+      :required
+      :type="inputType"
+      :maxlength="maxLength"
+      :class="{ 'pl-5': prependIcon }"
+      @focus="onFocus"
+      @focusout="onFocus"
+    />
+    <template #prepend>
+      <slot name="prepend" />
+    </template>
+    <template #append>
       <slot name="append">
         <span
           v-if="!appendIcon && type === 'password'"
