@@ -12,6 +12,7 @@ defineProps({
   counterActual: Number,
   counterMax: [Number, String],
   hint: String,
+  error: String,
   label: String,
   loading: Boolean,
   prefix: String,
@@ -44,7 +45,13 @@ defineProps({
     </div>
     <div class="vm-hint-field">
       <Transition name="fade" mode="out-in">
-        <span v-if="hint" class="vm-hint-message">{{ hint }}</span>
+        <span
+          v-if="hint || error"
+          class="vm-hint-message"
+          :class="{ 'vm-hint-error': error }"
+        >
+          {{ error || hint }}
+        </span>
       </Transition>
       <div
         v-if="counter"
@@ -156,6 +163,9 @@ defineProps({
       margin-left: auto;
       margin-top: 2px;
       color: #703a3a;
+    }
+    .vm-hint-error {
+      color: #d70000;
     }
 
     .vm-counter-limit {

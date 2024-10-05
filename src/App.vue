@@ -11,6 +11,10 @@ function toggleHint() {
     hint.value = 'Example'
   }
 }
+
+function checkRequired(value: string | undefined) {
+  return (!!value && value.length > 0) || 'This field is required'
+}
 </script>
 
 <template>
@@ -23,6 +27,7 @@ function toggleHint() {
       :hint="hint"
       type="password"
       prefix="hi"
+      :rules="[checkRequired]"
     />
     <button @click="toggleHint" style="margin-top: 1rem;">Click</button>
   </div>

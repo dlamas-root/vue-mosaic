@@ -2,6 +2,7 @@
 import { computed, ref, type ModelRef, type Ref } from 'vue'
 import VmIcon from '../VmIcon/VmIcon.vue'
 import VmField from '../VmField/VmField.vue'
+import { type Rule, validate } from '@/core/rules';
 
 defineOptions({
   name: 'VmInputText'
@@ -23,7 +24,7 @@ const props = defineProps({
   prefix: String,
   readonly: Boolean,
   required: Boolean,
-  rules: Array<Function>,
+  rules: Array<Rule>,
   suffix: String,
   iconColor: String,
   type: {
@@ -34,11 +35,16 @@ const props = defineProps({
 })
 
 const showPassword: Ref<boolean> = ref(false)
+const errorMessage: Ref<string | undefined> = ref()
 
 const inputType = computed(() =>
   props.type === 'password' && showPassword.value ? 'text' : props.type
 )
 const count = computed(() => model.value?.length || 0)
+
+function checkRules() {
+  errorMessage.value = validate(model.value, props.rules)
+}
 </script>
 
 <template>
@@ -49,6 +55,7 @@ const count = computed(() => model.value?.length || 0)
     :counterActual="count"
     :counterMax="maxLength"
     :hint
+    :error="errorMessage"
     :label
     :loading
     :prefix
@@ -65,6 +72,7 @@ const count = computed(() => model.value?.length || 0)
       :type="inputType"
       :maxlength="maxLength"
       :style="{ paddingLeft: prependIcon && '0px' }"
+      @input="checkRules"
     />
     <template #prepend>
       <slot name="prepend" />
