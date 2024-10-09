@@ -1,22 +1,33 @@
-import mountTemplate from '@/utils/mountTemplate'
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test, beforeEach } from 'vitest'
 import VmInputText from '../VmInputText.vue'
+import { mount } from '@vue/test-utils'
 
 describe('VmInputText component', () => {
+  let wrapperConfig: any = null
+  beforeEach(() => {
+    wrapperConfig = {
+      components: {
+        VmInputText
+      },
+      template: ''
+    }
+  })
   test('mount component', async () => {
-    const template: string = '<VmInputText label="Component"/>'
-    const wrapper = await mountTemplate(VmInputText, template, { data: () => ({ model: null }) })
+    wrapperConfig.template = '<VmInputText label="Component"/>'
+    const wrapper = mount(wrapperConfig, { data: () => ({ model: null }), attachTo: document.body })
 
+    await wrapper.vm.$nextTick()
     expect(wrapper.exists()).toBe(true)
     const label = wrapper.find('label')
     expect(label.exists()).toBe(true)
     expect(label.text()).toBe('Component')
   })
   test('v-model test', async () => {
-    const template: string =
+    wrapperConfig.template =
       '<div><VmInputText id="inputTest" label="Component" v-model="model"/><span id="result">{{ model }}</span></div>'
-    const wrapper = await mountTemplate(VmInputText, template, { data: () => ({ model: null }) })
+    const wrapper = mount(wrapperConfig, { data: () => ({ model: null }), attachTo: document.body })
 
+    await wrapper.vm.$nextTick()
     expect(wrapper.exists()).toBe(true)
     const input = wrapper.find('#inputTest')
     expect(input.exists()).toBe(true)
@@ -27,10 +38,11 @@ describe('VmInputText component', () => {
     expect(span.text()).toBe('Example')
   })
   test('disable component', async () => {
-    const template: string =
+    wrapperConfig.template =
       '<div><VmInputText id="inputTest" label="Component" disabled v-model="model"/><span id="result">{{ model }}</span></div>'
-    const wrapper = await mountTemplate(VmInputText, template, { data: () => ({ model: null }) })
+    const wrapper = mount(wrapperConfig, { data: () => ({ model: null }), attachTo: document.body })
 
+    await wrapper.vm.$nextTick()
     expect(wrapper.exists()).toBe(true)
     const input = wrapper.find('#inputTest')
     expect(input.exists()).toBe(true)
@@ -41,10 +53,11 @@ describe('VmInputText component', () => {
     expect(span.text()).toBe('')
   })
   test('show as password', async () => {
-    const template: string =
+    wrapperConfig.template =
       '<VmInputText type="password" id="inputTest" label="Component" v-model="model"/>'
-    const wrapper = await mountTemplate(VmInputText, template, { data: () => ({ model: null }) })
+    const wrapper = mount(wrapperConfig, { data: () => ({ model: null }), attachTo: document.body })
 
+    await wrapper.vm.$nextTick()
     expect(wrapper.exists()).toBe(true)
     const input = wrapper.find('#inputTest')
     expect(input.attributes('type')).toBe('password')
@@ -61,26 +74,32 @@ describe('VmInputText component', () => {
     expect(visibilityIcon.text()).toBe('visibility_off')
   })
   test('required component', async () => {
-    const template: string =
+    wrapperConfig.template =
       '<VmInputText type="password" id="inputTest" label="Component" required/>'
-    const wrapper = await mountTemplate(VmInputText, template)
+    const wrapper = mount(wrapperConfig, { attachTo: document.body })
+
+    await wrapper.vm.$nextTick()
     expect(wrapper.exists()).toBe(true)
     const input = wrapper.find('#inputTest')
     expect(input.attributes()).toHaveProperty('required')
   })
   test('slot label', async () => {
-    const template: string =
+    wrapperConfig.template =
       '<VmInputText type="password" id="inputTest" label="Component"><template #label>Label for slot</template></VmInputText>'
-    const wrapper = await mountTemplate(VmInputText, template)
+    const wrapper = mount(wrapperConfig)
+
+    await wrapper.vm.$nextTick()
     expect(wrapper.exists()).toBe(true)
     const label = wrapper.find('label')
     expect(label.exists()).toBe(true)
     expect(label.text()).toBe('Label for slot')
   })
   test('counter flag enabled', async () => {
-    const template: string =
+    wrapperConfig.template =
       '<VmInputText type="password" counter id="inputTest" label="Component" v-model="model"/>'
-    const wrapper = await mountTemplate(VmInputText, template, { data: () => ({ model: null }) })
+    const wrapper = mount(wrapperConfig, { data: () => ({ model: null }), attachTo: document.body })
+
+    await wrapper.vm.$nextTick()
     const input = wrapper.find('#inputTest')
     const counter = wrapper.find('div.vm-hint-counter')
     expect(counter.exists()).toBe(true)
@@ -91,11 +110,14 @@ describe('VmInputText component', () => {
     expect(counter.text()).toBe('8')
   })
   test('max length property', async () => {
-    const template: string =
+    wrapperConfig.template =
       '<VmInputText type="password" counter id="inputTest" label="Component" max-length="30" v-model="model"/>'
-    const wrapper = await mountTemplate(VmInputText, template, {
-      data: () => ({ model: 'Example input' })
+    const wrapper = mount(wrapperConfig, {
+      data: () => ({ model: 'Example input' }),
+      attachTo: document.body
     })
+
+    await wrapper.vm.$nextTick()
     const counter = wrapper.find('div.vm-hint-counter')
     expect(counter.exists()).toBe(true)
     expect(counter.text()).toBe('13/30')

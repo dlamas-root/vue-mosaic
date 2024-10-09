@@ -2,7 +2,7 @@
 import { computed, ref, type ModelRef, type Ref } from 'vue'
 import VmIcon from '../VmIcon/VmIcon.vue'
 import VmField from '../VmField/VmField.vue'
-import { type Rule, validate } from '@/core/rules';
+import { type Rule, validate } from '@/core/form'
 
 defineOptions({
   name: 'VmInputText'
