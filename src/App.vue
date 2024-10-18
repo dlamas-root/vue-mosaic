@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import VmInputText from './components/VmInputText/VmInputText.vue'
+import VmSelect from './components/VmSelect/VmSelect.vue'
 
 const hint = ref()
 
@@ -29,7 +30,10 @@ function checkRequired(value: string | undefined) {
       prefix="hi"
       :rules="[checkRequired]"
     />
-    <button @click="toggleHint" style="margin-top: 1rem;">Click</button>
+    <VmSelect label="Select" required>
+      <option value="Al">Algo</option>
+    </VmSelect>
+    <button @click="toggleHint" style="margin-top: 1rem">Click</button>
   </div>
 </template>
 
