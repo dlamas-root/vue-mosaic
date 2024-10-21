@@ -83,6 +83,24 @@ describe('VmInputText component', () => {
     const input = wrapper.find('#inputTest')
     expect(input.attributes()).toHaveProperty('required')
   })
+  test('required message as hint', async () => {
+    wrapperConfig.template = 
+      '<VmInputText type="password" id="inputTest" label="Component" required/>'
+    const wrapper = mount(wrapperConfig, { attachTo: document.body })
+
+    await wrapper.vm.$nextTick()
+    expect(wrapper.exists()).toBe(true)
+  
+    const input = wrapper.find('#inputTest')
+    expect(input.exists()).toBe(true)
+    await input.setValue('Example')
+    await input.setValue('')
+    await wrapper.vm.$nextTick()
+    const hint = wrapper.find('span.vm-hint-message')
+    expect(hint.exists()).toBe(true)
+    expect(hint.classes()).toContain('vm-hint-error')
+    expect(hint.text()).toBe('This field is required')
+  })
   test('slot label', async () => {
     wrapperConfig.template =
       '<VmInputText type="password" id="inputTest" label="Component"><template #label>Label for slot</template></VmInputText>'

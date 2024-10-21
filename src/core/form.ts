@@ -16,3 +16,7 @@ export function validate(value: any, rules: Array<Rule> | undefined): string {
   })
   return result
 }
+
+export function requiredRule(value: any): boolean | string {
+  return (!Array.isArray(value) && (typeof value === 'string' ? value?.trim().length > 0 : !!value)) || value === false || (Array.isArray(value) && value?.length > 0) || 'This field is required';
+}

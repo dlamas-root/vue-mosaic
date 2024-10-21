@@ -13,7 +13,15 @@ const props = defineProps({
   name: String,
   readonly: Boolean,
   required: Boolean,
-  rules: Array<Rule>
+  rules: Array<Rule>,
+  trueValue: {
+    type: [String, Boolean, Object],
+    default: true
+  },
+  falseValue: {
+    type: [String, Boolean, Object],
+    default: true
+  },
 })
 
 const checkClasses = computed(() => ({
@@ -41,6 +49,8 @@ function toggleCheck() {
           :required
           v-model="model"
           type="checkbox"
+          :true-value="trueValue"
+          :false-value="falseValue"
           :indeterminate.prop="indeterminate"
         />
       </div>
