@@ -2,8 +2,10 @@
 import { ref } from 'vue'
 import VmInputText from './components/VmInputText/VmInputText.vue'
 import VmSelect from './components/VmSelect/VmSelect.vue'
+import VmCheckbox from './components/VmCheckbox/VmCheckbox.vue'
 
 const hint = ref()
+const check = ref()
 
 function toggleHint() {
   if (hint.value) {
@@ -33,7 +35,9 @@ function checkRequired(value: string | undefined) {
     <VmSelect label="Select" required>
       <option value="Al">Algo</option>
     </VmSelect>
+    <VmCheckbox v-model="check" required :hint="hint"> My Label </VmCheckbox>
     <button @click="toggleHint" style="margin-top: 1rem">Click</button>
+    {{ check }}
   </div>
 </template>
 
