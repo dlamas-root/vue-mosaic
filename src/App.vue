@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import VmInputText from './components/VmInputText/VmInputText.vue'
+import VmInputText from './components/VmInputText/VmInputText.vue';
+import VmInputNumber from './components/VmInputNumber/VmInputNumber.vue';
 
 const hint = ref()
 
@@ -28,6 +29,13 @@ function checkRequired(value: string | undefined) {
       type="password"
       prefix="hi"
       :rules="[checkRequired]"
+    />
+    <VmInputNumber
+      label="Amount"
+      required
+      :hint="hint"
+      type="numbers"
+      prefix="$"
     />
     <button @click="toggleHint" style="margin-top: 1rem;">Click</button>
   </div>
