@@ -13,22 +13,26 @@ const props = defineProps({
   name: String,
   readonly: Boolean,
   required: Boolean,
-  rules: Array<Rule>,
-  trueValue: {
-    type: [String, Boolean, Object],
-    default: true
-  },
-  falseValue: {
-    type: [String, Boolean, Object],
-    default: true
-  },
+  rules: Array<Rule>
 })
 
-const checkClasses = computed(() => ({
-  'vm-checked': model.value,
-  'vm-indeterminate': props.indeterminate,
-  'vm-required': props.required
-}))
+// The condition evaluated in body computed its to enhancement performance
+const checkClasses = computed((oldValue: any) => {
+  const newValue = {
+    'vm-checked': model.value,
+    'vm-indeterminate': props.indeterminate,
+    'vm-required': props.required
+  }
+  if (
+    oldValue &&
+    oldValue['vm-checked'] === newValue['vm-checked'] &&
+    oldValue['vm-indeterminate'] === newValue['vm-indeterminate'] &&
+    oldValue['vm-required'] === newValue['vm-required']
+  ) {
+    return oldValue
+  }
+  return newValue
+})
 
 function toggleCheck() {
   if (!props.disabled) {
@@ -49,8 +53,6 @@ function toggleCheck() {
           :required
           v-model="model"
           type="checkbox"
-          :true-value="trueValue"
-          :false-value="falseValue"
           :indeterminate.prop="indeterminate"
         />
       </div>
