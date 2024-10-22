@@ -45,11 +45,7 @@ defineProps({
     </div>
     <div class="vm-hint-field">
       <Transition name="fade" mode="out-in">
-        <span
-          v-if="hint || error"
-          class="vm-hint-message"
-          :class="{ 'vm-hint-error': error }"
-        >
+        <span v-if="hint || error" class="vm-hint-message" :class="{ 'vm-hint-error': error }">
           {{ error || hint }}
         </span>
       </Transition>
@@ -102,11 +98,12 @@ defineProps({
       }
     }
 
-    &:has(> input:focus, input:valid) {
+    &:has(> input:focus, input:valid, select:focus, select:valid) {
       border-bottom: 2px solid #ac3f3f;
     }
 
-    input {
+    input,
+    select {
       width: 100%;
       height: 30px;
       background: transparent;

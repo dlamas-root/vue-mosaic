@@ -2,7 +2,7 @@
 import { computed, ref, type ModelRef, type Ref } from 'vue'
 import VmIcon from '../VmIcon/VmIcon.vue'
 import VmField from '../VmField/VmField.vue'
-import { type Rule, validate } from '@/core/form'
+import { type Rule, validate, requiredRule } from '@/core/form'
 
 defineOptions({
   name: 'VmInputText'
@@ -41,9 +41,19 @@ const inputType = computed(() =>
   props.type === 'password' && showPassword.value ? 'text' : props.type
 )
 const count = computed(() => model.value?.length || 0)
+const rules = computed(() => {
+  const ruleArray: Array<Rule> = [];
+  if (props.required) {
+    ruleArray.push((value: any): boolean | string => requiredRule(value))
+  }
+  if (props.rules) {
+    ruleArray.push(...props.rules)
+  }
+  return ruleArray;
+});
 
 function checkRules() {
-  errorMessage.value = validate(model.value, props.rules)
+  errorMessage.value = validate(model.value, rules.value)
 }
 </script>
 
