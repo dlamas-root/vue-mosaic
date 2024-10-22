@@ -40,6 +40,7 @@ function checkRequired(value: string | undefined) {
       :hint="hint"
       type="numbers"
       prefix="$"
+      decimals="5"
     />
     <button @click="toggleHint" style="margin-top: 1rem;">Click</button>
 
