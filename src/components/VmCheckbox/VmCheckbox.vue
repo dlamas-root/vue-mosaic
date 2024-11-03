@@ -82,6 +82,7 @@ $vm-checkbox-touch-size: 48px;
     flex-direction: row;
     font-size: 12px;
     justify-content: space-between;
+    margin-left: 2.5rem;
 
     .vm-hint-message {
       display: inline-block;
@@ -125,7 +126,7 @@ $vm-checkbox-touch-size: 48px;
     height: $vm-checkbox-size;
     position: relative;
     border-radius: 2px;
-    border: 2px solid gray;
+    border: 2px solid rgb(124, 10, 10);
     transition: 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
 
     &:focus {
@@ -207,7 +208,7 @@ $vm-checkbox-touch-size: 48px;
         transform: rotate(45deg) scale3d(1, 1, 1);
         transition: 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
       }
-      background-color: green;
+      background-color: rgb(124, 10, 10);
     }
   }
 }

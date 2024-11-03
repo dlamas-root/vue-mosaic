@@ -4,6 +4,7 @@ import VmInputText from './components/VmInputText/VmInputText.vue';
 import VmInputNumber from './components/VmInputNumber/VmInputNumber.vue';
 import VmSelect from './components/VmSelect/VmSelect.vue';
 import VmCheckbox from './components/VmCheckbox/VmCheckbox.vue';
+import VmBtn from './components/VmBtn/VmBtn.vue';
 
 const hint = ref()
 const check = ref()
@@ -23,6 +24,8 @@ function checkRequired(value: string | undefined) {
 
 <template>
   <div style="width: 300px; padding: 100px">
+    <VmBtn rounded type="icon" icon="mdi-plus"/>
+
     <VmInputText
       label="Password"
       counter
@@ -30,26 +33,45 @@ function checkRequired(value: string | undefined) {
       max-length="20"
       :hint="hint"
       type="password"
-      prefix="hi"
       :rules="[checkRequired]"
     />
 
     <VmInputNumber
-      label="Amount"
+      label="percentage"
       required
       :hint="hint"
-      type="numbers"
-      prefix="$"
-      decimals="5"
+      type="percentage"
+    />
+    <VmInputNumber
+      label="int"
+      required
+      :hint="hint"
+      type="int"
+    />
+    <VmInputNumber
+      label="float"
+      required
+      :hint="hint"
+      decimals="2"
+      type="float"
+    />
+    <VmInputNumber
+      label="money"
+      required
+      :hint="hint"
+      decimals="2"
+      type="money"
     />
     <button @click="toggleHint" style="margin-top: 1rem;">Click</button>
 
     <VmSelect label="Select" required>
       <option value="Al">Algo</option>
+      <option value="Al">Blah</option>
+      <option value="Al">Hi</option>
+      <option value="Al">Bye</option>
     </VmSelect>
     <VmCheckbox v-model="check" required :hint="hint"> My Label </VmCheckbox>
     <button @click="toggleHint" style="margin-top: 1rem">Click</button>
-    {{ check }}
 
   </div>
 </template>
