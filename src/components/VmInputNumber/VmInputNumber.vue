@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, type ModelRef, type Ref } from 'vue'
+import { computed, ref, type ModelRef, type Ref, onMounted } from 'vue'
 import VmIcon from '../VmIcon/VmIcon.vue'
 import VmField from '../VmField/VmField.vue'
 import { type Rule, validate } from '@/core/form'
@@ -8,9 +8,9 @@ defineOptions({
     name: 'VmInputText'
 })
 
-const model: ModelRef<string | undefined> = defineModel<string>()
-
-const inputType = 'number';
+const model: ModelRef<string | undefined> = defineModel<number>()
+let innerPrefix: Ref<string | undefined> = ref<string>();
+let innerSuffix: Ref<string | undefined> = ref<string>();
 
 const props = defineProps({
     id: String,
@@ -31,18 +31,32 @@ const props = defineProps({
         type: String || Number,
         default: 0,
     },
+    type: String,
 })
 
+onMounted(() => {
+    if(props.type === 'money'){
+        innerPrefix.value = '$';
+    } else{
+        innerPrefix.value = props.prefix
+    }
 
-const errorMessage: Ref<string | undefined> = ref()
+    if(props.type === 'percentage'){
+        innerSuffix.value = '%';
+    }else{
+        innerSuffix.value = props.suffix;
+    }
+});
+
+const errorMessage: Ref<string | undefined> = ref<string | undefined>()
 
 function checkRules() {
-    errorMessage.value = validate(model.value, props.rules)
+    errorMessage.value = validate(model.value, props.rules);
 }
 
 const steps = computed(() => {
     let res = '0'
-    if(props.decimals != 0){
+    if(Number(props.decimals) != 0 && props.type !== 'int'){
         res += '.';
         for(let i = (Number(props.decimals) - 1); i > 0; i--){
             res += '0'
@@ -53,18 +67,41 @@ const steps = computed(() => {
     return res;
 })
 
-</script>
 
+function formatNumber(){
+    if(props.type === 'float'){
+        model.value = String(Number(model.value).toFixed(Number(props.decimals)));
+        console.log('float')
+
+    }else if(props.type === 'int'){
+        model.value = String(Math.round(Number(model.value)));
+
+    }else if(props.type === 'percentage'){
+        model.value = String(Math.min(Math.max(Number(model.value), 0), 100));
+
+    }else if(props.type === 'money'){
+        // debugger
+        model.value = Number(model.value).toFixed(Number(props.decimals));
+        let parts = String(model.value).split(".");
+        model.value = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "." + parts[1]
+
+    }
+}
+
+
+</script>
 <template>
+        {{ formatNumber(model) }}
     <VmField :appendIcon :prependIcon :hint
-        :error="errorMessage" :label :loading :prefix :suffix :iconColor>
+        :error="errorMessage" :label :loading :prefix="innerPrefix" :suffix="innerSuffix" :iconColor >
         <input
-            v-model="model"
+            v-model.number="model"
             @input="checkRules"
+            @change="formatNumber"
             :id :name :disabled :readonly :required
-            :type="inputType"
             :style="{ paddingLeft: prependIcon && '0px' }"
             :step="steps"
+            type="number"
         />
         <template #prepend>
             <slot name="prepend" />
