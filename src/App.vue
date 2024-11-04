@@ -24,7 +24,9 @@ function checkRequired(value: string | undefined) {
 
 <template>
   <div style="width: 300px; padding: 100px">
-    <VmBtn rounded type="icon" icon="mdi-plus"/>
+    <VmBtn rounded icon="star" type="flat" :iconSize="20" style="margin: 0.5rem;" />
+    <VmBtn rounded icon="star" style="margin: 0.5rem;" type="outlined" />
+    <VmBtn rounded icon="star" :iconSize="30" style="margin: 0.5rem;" />
 
     <VmInputText
       label="Password"
