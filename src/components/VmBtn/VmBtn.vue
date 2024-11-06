@@ -15,9 +15,15 @@ defineProps({
     type: {
         type: String,
         default: "solid",
-    }, // flat, outlined, icon w/text, rounded, default is solid
-    size: String,
-    rounded: Boolean,
+    },
+    size: {
+        type: String || Number,
+        default: 16,
+    },
+    rounded: {
+        type: Boolean || String || Number,
+        default: 30,
+    },
     icon: String,
     color: String,
     iconSize: {
@@ -48,18 +54,16 @@ onMounted(() => {
             {{ icon }}
         </span>
     </button>
-    <button v-else :class="`vm-btn-${type}`" :rounded="rounded" >
-        Button
+    <button v-else :class="`vm-btn-${type}`" :style="`border-radius: ${rounded}px; font-size: ${size}px;`" >
+        {{ label }}
     </button>
 </template>
 
 <style lang="scss">
 button{
     padding: 8px 20px;
-    font-size: 16px;
     text-transform: capitalize;
     border: none;
-    border-radius: 4px;
     transition: all ease-in-out 0.2s;
     &:has(span){
         border-radius: 100px;
