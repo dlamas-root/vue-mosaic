@@ -27,6 +27,9 @@ function checkRequired(value: string | undefined) {
     <VmBtn rounded icon="star" type="flat" :iconSize="20" style="margin: 0.5rem;" />
     <VmBtn rounded icon="star" style="margin: 0.5rem;" type="outlined" />
     <VmBtn rounded icon="star" :iconSize="30" style="margin: 0.5rem;" />
+    <VmBtn  :iconSize="30" :rounded="40" style="margin: 0.5rem;" />
+    <VmBtn  :iconSize="30" :rounded="30" style="margin: 0.5rem;" type="outlined"/>
+    <VmBtn  :iconSize="30" size="24" :rounded="10" style="margin: 0.5rem;" type="flat"/>
 
     <VmInputText
       label="Password"
