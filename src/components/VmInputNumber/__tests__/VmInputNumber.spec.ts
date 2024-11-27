@@ -40,4 +40,20 @@ describe('VmInputNumber component', () => {
     await input.setValue('')
     expect(span.text()).toBe('')
   })
+  test('disabled component', async () => {
+    wrapperConfig.template =
+      '<div><VmInputNumber id="test" label="Input Number" v-model="model" disabled decimals="2"/><span id="result">{{ model }}</span></div>'
+    const wrapper = mount(wrapperConfig, { data: () => ({ model: null }), attachTo: document.body })
+
+
+    await wrapper.vm.$nextTick()
+    expect(wrapper.exists()).toBe(true)
+    const input = wrapper.find('#test')
+    expect(input.exists()).toBe(true)
+    await input.setValue('123512.4323')
+    
+    const span = wrapper.find('#result')
+    expect(span.exists()).toBe(true)
+    expect(span.text()).toBe('')
+  })
 })

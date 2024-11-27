@@ -5,6 +5,9 @@ import VmInputNumber from './components/VmInputNumber/VmInputNumber.vue';
 import VmSelect from './components/VmSelect/VmSelect.vue';
 import VmCheckbox from './components/VmCheckbox/VmCheckbox.vue';
 import VmBtn from './components/VmBtn/VmBtn.vue';
+import VmList from './components/VmList/VmList.vue';
+import VmListItem from './components/VmList/VmListItem.vue';
+import VmListGroup from './components/VmList/VmListGroup.vue';
 
 const hint = ref()
 const check = ref()
@@ -78,6 +81,19 @@ function checkRequired(value: string | undefined) {
     <VmCheckbox v-model="check" required :hint="hint"> My Label </VmCheckbox>
     <button @click="toggleHint" style="margin-top: 1rem">Click</button>
 
+    <VmList>
+      <VmListItem>
+        Item
+      </VmListItem>
+      <VmListGroup>
+        <template #prepend>
+          lll
+        </template>
+        <VmListItem>
+          Item 2
+        </VmListItem>
+      </VmListGroup>
+    </VmList>
   </div>
 </template>
 
