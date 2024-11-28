@@ -40,20 +40,31 @@ const showOptions: Ref<boolean> = ref(false)
     :suffix
     :iconColor
   >
-    <select
+    <input
       v-model="model"
       :id
       :name
       :disabled
-      :readonly
+      readonly
       :required
       :style="{ paddingLeft: prependIcon && '0px' }"
       @click="showOptions = !showOptions"
-    >
-      <slot />
-    </select>
-    <Transition>
-      <div v-show="showOptions"></div>
-    </Transition>
+    />
   </VmField>
+  <Transition>
+    <div :key="'select_' + showOptions" v-show="showOptions" class="vm-select-options">
+      <slot/>
+    </div>
+  </Transition>
 </template>
+
+<style lang="scss">
+.vm-select-options {
+  padding: 5px 0;
+  background: white;
+  position: absolute;
+  width: inherit;
+  z-index: 100;
+  border: solid 1px black
+}
+</style>

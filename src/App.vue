@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import VmInputText from './components/VmInputText/VmInputText.vue';
 import VmInputNumber from './components/VmInputNumber/VmInputNumber.vue';
 import VmSelect from './components/VmSelect/VmSelect.vue';
+import VmOption from './components/VmSelect/VmOption.vue';
 import VmCheckbox from './components/VmCheckbox/VmCheckbox.vue';
 import VmBtn from './components/VmBtn/VmBtn.vue';
 
@@ -70,10 +71,10 @@ function checkRequired(value: string | undefined) {
     <button @click="toggleHint" style="margin-top: 1rem;">Click</button>
 
     <VmSelect label="Select" required>
-      <option value="Al">Algo</option>
-      <option value="Al">Blah</option>
-      <option value="Al">Hi</option>
-      <option value="Al">Bye</option>
+      <VmOption value="Al">Algo</VmOption>
+      <VmOption value="Al">Blah</VmOption>
+      <VmOption value="Al">Hi</VmOption>
+      <VmOption value="Al">Bye</VmOption>
     </VmSelect>
     <VmCheckbox v-model="check" required :hint="hint"> My Label </VmCheckbox>
     <button @click="toggleHint" style="margin-top: 1rem">Click</button>
