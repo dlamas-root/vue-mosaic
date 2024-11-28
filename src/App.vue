@@ -8,6 +8,7 @@ import VmBtn from './components/VmBtn/VmBtn.vue';
 import VmList from './components/VmList/VmList.vue';
 import VmListItem from './components/VmList/VmListItem.vue';
 import VmListGroup from './components/VmList/VmListGroup.vue';
+import VmIcon from './components/VmIcon/VmIcon.vue';
 
 const hint = ref()
 const check = ref()
@@ -87,7 +88,7 @@ function checkRequired(value: string | undefined) {
       </VmListItem>
       <VmListGroup>
         <template #prepend>
-          lll
+          <VmIcon name="home" size="20px"/>
         </template>
         <VmListItem>
           Item 2
