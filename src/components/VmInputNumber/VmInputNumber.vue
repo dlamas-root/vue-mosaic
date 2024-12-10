@@ -1,113 +1,129 @@
 <script setup lang="ts">
-import { computed, ref, type ModelRef, type Ref, onMounted } from 'vue'
-import VmIcon from '../VmIcon/VmIcon.vue'
+import { ref, computed, type Ref, onMounted, watch } from 'vue'
 import VmField from '../VmField/VmField.vue'
 import { type Rule, validate } from '@/core/form'
 
 defineOptions({
-    name: 'VmInputText'
+  name: 'VmInputText'
 })
-
-const model: ModelRef<string | undefined> = defineModel<number>()
-let innerPrefix: Ref<string | undefined> = ref<string>();
-let innerSuffix: Ref<string | undefined> = ref<string>();
 
 const props = defineProps({
-    id: String,
-    appendIcon: String,
-    prependIcon: String,
-    disabled: Boolean,
-    hint: String,
-    label: String,
-    loading: Boolean,
-    name: String,
-    prefix: String,
-    readonly: Boolean,
-    required: Boolean,
-    rules: Array<Rule>,
-    suffix: String,
-    iconColor: String,
-    decimals: {
-        type: String || Number,
-        default: 0,
-    },
+  id: String,
+  appendIcon: String,
+  prependIcon: String,
+  disabled: Boolean,
+  hint: String,
+  label: String,
+  loading: Boolean,
+  name: String,
+  prefix: String,
+  readonly: Boolean,
+  required: Boolean,
+  rules: Array<Rule>,
+  suffix: String,
+  iconColor: String,
+  decimals: {
+    type: [Number, String],
+    default: 0
+  },
+  type: {
     type: String,
+    validator: (t: string) => ['float', 'integer', 'percentage'].includes(t),
+    default: 'float'
+  },
+  modelValue: Number
 })
-
-onMounted(() => {
-    if(props.type === 'money'){
-        innerPrefix.value = '$';
-    } else{
-        innerPrefix.value = props.prefix
-    }
-
-    if(props.type === 'percentage'){
-        innerSuffix.value = "%";
-    }else{
-        innerSuffix.value = props.suffix;
-    }
-});
 
 const errorMessage: Ref<string | undefined> = ref<string | undefined>()
+const internalValue: Ref<string | null | undefined> = ref()
 
-function checkRules() {
-    errorMessage.value = validate(model.value, props.rules);
-}
+const emit = defineEmits(['update:modelValue'])
 
-const steps = computed(() => {
-    let res = '0'
-    if(props.decimals != 0 && props.type !== 'int'){
-        res += '.';
-        for(let i = (props.decimals - 1); i > 0; i--){
-            res += '0'
-        }
-        res += '1'
-    }
-
-    return res;
+const decimals: Ref<number> = computed(() => {
+  let num: number = 0
+  if (typeof props.decimals === 'string' && props.type !== 'integer') {
+    num = parseInt(props.decimals)
+  }
+  return !isNaN(num) ? num : 0
 })
 
+watch(
+  () => props.modelValue,
+  () => (internalValue.value = humanFormat(props.modelValue))
+)
 
-function formatNumber(){
-    if(props.type === 'float'){
-        model.value = String((model.value).toFixed(Number.decimals));
-        console.log('float')
+onMounted(() => (internalValue.value = humanFormat(props.modelValue)))
 
-    }else if(props.type === 'int'){
-        model.value = String(Math.round(Number(model.value)));
-
-    }else if(props.type === 'percentage'){
-        model.value = String(Math.min(Math.max(Number(model.value), 0), 100));
-
-    }else if(props.type === 'money'){
-        // debugger
-        model.value = Number(model.value).toFixed(Number(props.decimals));
-        let parts = String(model.value).split(".");
-        model.value = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "." + parts[1]
-
-    }
+function checkRules() {
+  errorMessage.value = validate(internalValue.value, props.rules)
 }
 
+function clearNumber(value: string | null | undefined): number | null {
+  if (value == null || value == undefined || value.trim() === '') return null
+  const parts: string[] = value.split('.')
+  let valueNumber = Number(parts[0].replace(',', ''))
+  if (parts.length > 1) {
+    valueNumber += Number('0.' + parts[1])
+  }
+  return valueNumber
+}
 
+function humanFormat(value: number | null | undefined): string | null {
+  if (value == null || value == undefined) return null
+  let v = value
+  if (props.type === 'percentage') {
+    v = Math.min(Math.max(value, 0), 100)
+  }
+  return Number(v).toLocaleString('en-US', {
+    maximumFractionDigits: decimals.value,
+    minimumFractionDigits: decimals.value
+  })
+}
+
+function changeValue() {
+  const num = clearNumber(internalValue.value)
+  const numberFormated = humanFormat(num)
+  internalValue.value = numberFormated
+  const result = Number(num?.toFixed(decimals.value))
+  emit('update:modelValue', isNaN(result) ? null : result)
+}
+
+function checkKey(evt: KeyboardEvent) {
+  const isNumber: boolean = !isNaN(parseInt(evt.key))
+  if (!isNumber && evt.key !== '.') {
+    evt.preventDefault()
+  }
+}
 </script>
 <template>
-    <VmField :appendIcon :prependIcon :hint
-        :error="errorMessage" :label :loading :prefix="innerPrefix" :suffix="innerSuffix" :iconColor >
-        <input
-            v-model="model"
-            @input="checkRules"
-            @change="formatNumber"
-            :id :name :disabled :readonly :required
-            :style="{ paddingLeft: prependIcon && '0px' }"
-            :step="steps"
-            type="number"
-        />
-        <template #prepend>
-            <slot name="prepend" />
-        </template>
-        <template #label>
-            <slot name="label" />
-        </template>
-    </VmField>
-    {{ props.type === 'percentage' }} -555 - {{ innerSuffix ? innerSuffix : 'hi' }}
+  <VmField
+    :appendIcon
+    :prependIcon
+    :hint
+    :error="errorMessage"
+    :label
+    :loading
+    :prefix
+    :suffix
+    :iconColor
+  >
+    <input
+      v-model="internalValue"
+      :id
+      :name
+      :disabled
+      :readonly
+      :required
+      :style="{ paddingLeft: prependIcon && '0px' }"
+      @change="changeValue"
+      @keypress="checkKey"
+      @input="checkRules"
+    />
+    <template #prepend>
+      <slot name="prepend" />
+    </template>
+    <template #label>
+      <slot name="label" />
+    </template>
+  </VmField>
 </template>
