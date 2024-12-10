@@ -67,6 +67,13 @@ function checkRequired(value: string | undefined) {
       decimals="2"
       type="money"
     />
+    <VmInputNumber
+      label="money"
+      required
+      :hint="hint"
+      decimals="2"
+      type="money"
+    />
     <button @click="toggleHint" style="margin-top: 1rem;">Click</button>
 
     <VmSelect label="Select" required>

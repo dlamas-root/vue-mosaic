@@ -42,7 +42,7 @@ onMounted(() => {
     }
 
     if(props.type === 'percentage'){
-        innerSuffix.value = '%';
+        innerSuffix.value = "%";
     }else{
         innerSuffix.value = props.suffix;
     }
@@ -56,9 +56,9 @@ function checkRules() {
 
 const steps = computed(() => {
     let res = '0'
-    if(Number(props.decimals) != 0 && props.type !== 'int'){
+    if(props.decimals != 0 && props.type !== 'int'){
         res += '.';
-        for(let i = (Number(props.decimals) - 1); i > 0; i--){
+        for(let i = (props.decimals - 1); i > 0; i--){
             res += '0'
         }
         res += '1'
@@ -70,7 +70,7 @@ const steps = computed(() => {
 
 function formatNumber(){
     if(props.type === 'float'){
-        model.value = String(Number(model.value).toFixed(Number(props.decimals)));
+        model.value = String((model.value).toFixed(Number.decimals));
         console.log('float')
 
     }else if(props.type === 'int'){
@@ -91,11 +91,10 @@ function formatNumber(){
 
 </script>
 <template>
-        {{ formatNumber(model) }}
     <VmField :appendIcon :prependIcon :hint
         :error="errorMessage" :label :loading :prefix="innerPrefix" :suffix="innerSuffix" :iconColor >
         <input
-            v-model.number="model"
+            v-model="model"
             @input="checkRules"
             @change="formatNumber"
             :id :name :disabled :readonly :required
@@ -110,4 +109,5 @@ function formatNumber(){
             <slot name="label" />
         </template>
     </VmField>
+    {{ props.type === 'percentage' }} -555 - {{ innerSuffix ? innerSuffix : 'hi' }}
 </template>
