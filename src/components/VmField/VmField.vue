@@ -94,7 +94,7 @@ defineProps({
       &.vm-label-focused {
         font-size: 0.7rem;
         top: 10px;
-        transform: translateY(-120%);
+        transform: translateY(-130%);
       }
     }
 
@@ -117,7 +117,7 @@ defineProps({
         ~ label {
           font-size: 0.7rem;
           top: 10px;
-          transform: translateY(-120%);
+          transform: translateY(-130%);
         }
       }
 

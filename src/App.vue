@@ -46,6 +46,7 @@ function checkRequired(value: string | undefined) {
       required
       :hint="hint"
       type="percentage"
+      prefix="%"
     />
     <VmInputNumber
       label="int"
@@ -66,6 +67,7 @@ function checkRequired(value: string | undefined) {
       :hint="hint"
       decimals="2"
       type="money"
+      prefix="$"
     />
     <VmInputNumber
       label="money"
